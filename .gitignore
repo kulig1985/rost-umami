@@ -7,3 +7,8 @@ node_modules
 .env
 .shopify
 .react-router
+
+# IDE / eszköz artefaktumok
+.idea
+*.tsbuildinfo
+.impeccable

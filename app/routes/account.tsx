@@ -65,7 +65,8 @@ function AccountMenu() {
   }) {
     return {
       fontWeight: isActive ? 'bold' : undefined,
-      color: isPending ? 'grey' : 'black',
+      color: isActive ? 'var(--primary)' : 'var(--text)',
+      opacity: isPending ? 0.6 : undefined,
     };
   }
 

@@ -23,11 +23,14 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const {shop, menu} = header;
+  const {menu} = header;
   return (
     <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+      <NavLink prefetch="intent" to="/" className="logo" end>
+        <span className="logo-mark">
+          Rost <em>és</em> Umami
+        </span>
+        <span className="logo-sub">szakácskönyv</span>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -61,10 +64,10 @@ export function HeaderMenu({
           end
           onClick={close}
           prefetch="intent"
-          style={activeLinkStyle}
+          className="header-menu-item"
           to="/"
         >
-          Home
+          Kezdőlap
         </NavLink>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
@@ -84,7 +87,6 @@ export function HeaderMenu({
             key={item.id}
             onClick={close}
             prefetch="intent"
-            style={activeLinkStyle}
             to={url}
           >
             {item.title}
@@ -102,14 +104,16 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-          </Await>
-        </Suspense>
+      <NavLink prefetch="intent" to="/account" className="header-cta">
+        <IconAccount />
+        <span className="header-cta-label">
+          <Suspense fallback="Belépés">
+            <Await resolve={isLoggedIn} errorElement="Belépés">
+              {(isLoggedIn) => (isLoggedIn ? 'Fiók' : 'Belépés')}
+            </Await>
+          </Suspense>
+        </span>
       </NavLink>
-      <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
   );
@@ -119,30 +123,23 @@ function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
     <button
-      className="header-menu-mobile-toggle reset"
+      className="header-menu-mobile-toggle reset header-cta"
       onClick={() => open('mobile')}
+      aria-label="Menü"
     >
-      <h3>☰</h3>
+      <IconMenu />
     </button>
   );
 }
 
-function SearchToggle() {
-  const {open} = useAside();
-  return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
-    </button>
-  );
-}
-
-function CartBadge({count}: {count: number}) {
+function CartBadge({count}: {count: number | null}) {
   const {open} = useAside();
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
     <a
       href="/cart"
+      className="header-cta cart-toggle"
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -154,14 +151,20 @@ function CartBadge({count}: {count: number}) {
         } as CartViewPayload);
       }}
     >
-      Cart <span aria-label={`(items: ${count})`}>{count}</span>
+      <IconCart />
+      {count !== null && count > 0 ? (
+        <span className="cart-count" aria-label={`Kosár: ${count} tétel`}>
+          {count}
+        </span>
+      ) : null}
+      <span className="header-cta-label">Kosár</span>
     </a>
   );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   return (
-    <Suspense fallback={<CartBadge count={0} />}>
+    <Suspense fallback={<CartBadge count={null} />}>
       <Await resolve={cart}>
         <CartBanner />
       </Await>
@@ -175,6 +178,52 @@ function CartBanner() {
   return <CartBadge count={cart?.totalQuantity ?? 0} />;
 }
 
+/* --- Ikonok (a piac-stand nyelvén, egységes 1.6 vonalvastagság) --- */
+
+function IconAccount() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M4.5 20c1.2-3.4 4-5 7.5-5s6.3 1.6 7.5 5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function IconCart() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 5h2l1.6 10.2a1.6 1.6 0 0 0 1.6 1.4h7.5a1.6 1.6 0 0 0 1.6-1.3L20 8H6.2"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="20" r="1.1" fill="currentColor" />
+      <circle cx="17" cy="20" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconMenu() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 7h16M4 12h16M4 17h16"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+// Csak fallback – éles boltban a store `main-menu` linklistje írja felül.
 const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
@@ -182,50 +231,28 @@ const FALLBACK_HEADER_MENU = {
       id: 'gid://shopify/MenuItem/461609500728',
       resourceId: null,
       tags: [],
-      title: 'Collections',
+      title: 'A könyv',
       type: 'HTTP',
-      url: '/collections',
+      url: '/products/rost-es-umami',
       items: [],
     },
     {
       id: 'gid://shopify/MenuItem/461609533496',
       resourceId: null,
       tags: [],
-      title: 'Blog',
+      title: 'Rólunk',
       type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
+      url: '/pages/rolunk',
       items: [],
     },
     {
       id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
+      resourceId: null,
       tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
+      title: 'Kapcsolat',
+      type: 'HTTP',
+      url: '/pages/kapcsolat',
       items: [],
     },
   ],
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
-}

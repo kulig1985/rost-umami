@@ -96,13 +96,10 @@ function CartEmpty({
   return (
     <div hidden={hidden}>
       <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
-      </p>
+      <p>A kosarad még üres. A piac mai kiemelt tétele vár rád!</p>
       <br />
-      <Link to="/collections" onClick={close} prefetch="viewport">
-        Continue shopping →
+      <Link to="/products/rost-es-umami" onClick={close} prefetch="viewport">
+        Irány a könyv →
       </Link>
     </div>
   );

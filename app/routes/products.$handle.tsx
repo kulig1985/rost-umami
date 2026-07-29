@@ -15,7 +15,7 @@ import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: `Rost és Umami | ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -101,7 +101,11 @@ export default function Product() {
     <div className="product">
       <ProductImage image={selectedVariant?.image} />
       <div className="product-main">
+        <span className="kicker text-terracotta-deep">Mai kiemelt tétel</span>
         <h1>{title}</h1>
+        <p className="mt-1 mb-4 font-body text-lg text-ink/70">
+          Szakácskönyv · Szabó Adrienn &amp; Keve Márton
+        </p>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
@@ -113,9 +117,7 @@ export default function Product() {
         />
         <br />
         <br />
-        <p>
-          <strong>Description</strong>
-        </p>
+        <h3>Leírás</h3>
         <br />
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
         <br />

@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    # A worker env változói (secret is). A .env a VPS-en él, NEM a gitben.
+    env_file: .env
+    # A Shopify CLI a .env fájlt is olvassa a cwd-ből → biztonsági öv a process env mellé.
+    volumes:
+      - ./.env:/app/.env:ro
+    expose:
+      - "3000"
+    networks: [web]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # A .env-ből interpolálva (docker compose a projekt .env-jét olvassa a ${...}-hez).
+      SITE_DOMAIN: ${SITE_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [web]
+
+networks:
+  web: {}
+
+volumes:
+  caddy_data: {}
+  caddy_config: {}

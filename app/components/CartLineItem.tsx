@@ -64,13 +64,18 @@ export function CartLineItem({
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
           <ul>
-            {selectedOptions.map((option) => (
-              <li key={option.name}>
-                <small>
-                  {option.name}: {option.value}
-                </small>
-              </li>
-            ))}
+            {selectedOptions
+              .filter(
+                (option) =>
+                  option.value !== 'Default Title' && option.name !== 'Title',
+              )
+              .map((option) => (
+                <li key={option.name}>
+                  <small>
+                    {option.name}: {option.value}
+                  </small>
+                </li>
+              ))}
           </ul>
           <CartLineQuantity line={line} />
         </div>
@@ -110,7 +115,7 @@ function CartLineQuantity({line}: {line: CartLine}) {
 
   return (
     <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
+      <small>Mennyiség: {quantity}</small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
@@ -157,8 +162,8 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
-        Remove
+      <button className="cart-remove" disabled={disabled} type="submit">
+        Törlés
       </button>
     </CartForm>
   );

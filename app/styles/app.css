@@ -1,20 +1,301 @@
+/*
+* ==================================================
+* Rost és Umami — meleg, szerkesztői (editorial) prémium
+* szakácskönyv, a borító palettájára hangolva (lásd DESIGN.md).
+* Vékony keretek, visszafogott árnyékok, fotó-központú.
+* ==================================================
+*/
+
 :root {
-  --aside-width: 400px;
+  /* ---------- Elrendezés ---------- */
+  --aside-width: 420px;
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
-  --header-height: 64px;
-  --color-dark: #000;
-  --color-light: #fff;
+  --header-height: 66px;
+
+  /* ---------- Primitívek (borító-paletta, editorial) ---------- */
+  --paper: #f5e3b5; /* domináns búza-krém */
+  --chalk: #fbf1d4; /* emelt felület / világos szöveg sötéten */
+  --cream-deep: #ecdcae;
+  --ink: #3a1218; /* mély szilva – tipográfia */
+  --ink-soft: #6b4a44; /* tompított szöveg világoson */
+  --board: #3a1218; /* sötét mezők */
+  --board-deep: #2b0e12;
+  --terracotta: #d84a13; /* elsődleges márkaszín */
+  --terracotta-deep: #a5350d;
+  --amber: #eda62b; /* visszafogott akcent */
+  --olive: #5d8a32; /* csak takarékosan */
+
+  --ink-rgb: 58 18 24;
+  --chalk-rgb: 251 241 212;
+  --olive-rgb: 93 138 50;
+
+  /* ---------- Felület + szöveg ---------- */
+  --bg: var(--paper);
+  --surface: var(--chalk);
+  --surface-2: var(--cream-deep);
+  --surface-inverse: var(--board);
+  --surface-inverse-2: var(--board-deep);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --text-inverse: var(--chalk);
+  --text-inverse-muted: rgb(var(--chalk-rgb) / 0.75);
+
+  /* ---------- Akció / interaktív ---------- */
+  --primary: var(--terracotta); /* elsődleges akció */
+  --primary-hover: var(--terracotta-deep);
+  --on-primary: var(--chalk);
+  --accent: var(--amber); /* visszafogott kiemelés (árcímke, seal) */
+  --on-accent: var(--ink);
+  --secondary: var(--board);
+  --on-secondary: var(--chalk);
+  --link: var(--terracotta-deep); /* szöveglink világoson (AA) */
+
+  /* ---------- Keret / elválasztó (vékony, editorial) ---------- */
+  --frame: rgb(var(--ink-rgb) / 0.55); /* finom képkeret */
+  --border: rgb(var(--ink-rgb) / 0.16);
+  --divider: rgb(var(--ink-rgb) / 0.1);
+  --hairline: rgb(var(--ink-rgb) / 0.28);
+  --divider-inverse: rgb(var(--chalk-rgb) / 0.16);
+
+  /* ---------- Tint / overlay / árnyék (visszafogott) ---------- */
+  --tint: rgb(var(--ink-rgb) / 0.05);
+  --tint-2: rgb(var(--ink-rgb) / 0.08);
+  --overlay: rgb(var(--ink-rgb) / 0.5);
+  --glow-amber: rgb(237 166 43 / 0.14);
+  --shadow-color: rgb(var(--ink-rgb) / 0.16);
+  --shadow-strong: rgb(var(--ink-rgb) / 0.4);
+  --shadow-crate: 0 12px 30px -18px rgb(var(--ink-rgb) / 0.4);
+  --shadow-hover: 0 18px 40px -20px rgb(var(--ink-rgb) / 0.45);
+  --shadow-soft: 0 14px 34px -20px rgb(var(--ink-rgb) / 0.4);
+
+  /* ---------- Fókusz / kijelölés ---------- */
+  --focus: var(--terracotta-deep);
+  --focus-inverse: var(--amber);
+  --select-bg: var(--amber);
+  --select-text: var(--ink);
+
+  /* ---------- Állapotok (AA) ---------- */
+  --success: var(--olive);
+  --success-bg: #e6edcf;
+  --success-text: #35521c;
+  --success-border: #bccf9a;
+  --warning: var(--amber);
+  --warning-bg: #f8e7bf;
+  --warning-text: #6a4a10;
+  --warning-border: #e6cd82;
+  --danger: #b3261e;
+  --danger-bg: #f6d9d3;
+  --danger-text: #7a1c17;
+  --danger-border: #e0a79f;
+  --info: var(--terracotta-deep);
+  --info-bg: #f6ddcf;
+  --info-text: #7a2e0d;
+  --info-border: #e0b198;
 }
 
-img {
-  border-radius: 4px;
+/* Dinamikus fókusz: sötét felületeken világos gyűrű */
+.header,
+.footer,
+aside,
+.cart-summary-aside,
+.bg-board,
+.bg-board-deep,
+.bg-terracotta {
+  --focus: var(--focus-inverse);
+}
+
+/* Gomb terrakotta sávon: kontrasztos borostyán variáns */
+.btn-on-accent,
+.bg-terracotta .btn-market {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: none;
+}
+.btn-on-accent:hover,
+.bg-terracotta .btn-market:hover {
+  background: var(--chalk);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--select-bg);
+  color: var(--select-text);
+}
+
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 1px;
 }
 
 /*
 * --------------------------------------------------
-* Non anchor links
+* Alap
+* --------------------------------------------------
+*/
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 1.06rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* A skeleton reset 1rem margót ad a main-nek; a teljes szélességű
+   színmezőkhöz ezt kinullázzuk (a belső route-ok saját paddinget hoznak). */
+body > main {
+  margin: 0;
+}
+
+/* Reset felülírások token-alapon (a #000 / #ddd beégetések helyett) */
+input,
+textarea,
+select {
+  border-color: var(--frame);
+  color: var(--text);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+hr {
+  border-top-color: var(--divider);
+}
+code {
+  background: var(--tint-2);
+  color: var(--text);
+}
+
+/* Festett tábla-textúra (finom kréta-csíkok) – valódi felület, nem lapos */
+.paint-texture {
+  position: relative;
+}
+.paint-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Világ-primitívek */
+.kicker {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 0.45rem 0.9rem;
+  transform: rotate(-1deg);
+}
+
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.62rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transform: rotate(-5deg);
+}
+
+/* Piaci gombok */
+.btn-market {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: 1.05rem;
+  padding: 0.85rem 1.6rem;
+  border: 0;
+  cursor: pointer;
+  box-shadow: var(--shadow-crate);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+}
+.btn-market:hover {
+  color: var(--on-primary);
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-hover);
+}
+.btn-market:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  padding-bottom: 3px;
+  border-bottom: 2px solid currentColor;
+}
+
+/*
+* --------------------------------------------------
+* Nem-anchor linkek
 * --------------------------------------------------
 */
 .link:hover {
@@ -28,54 +309,48 @@ img {
 * --------------------------------------------------
 */
 .mock-shop-notice {
-  background: var(--color-light);
-  border: 1px solid var(--color-dark);
-  border-left-width: 0.5rem;
+  background: var(--info-bg);
+  color: var(--info-text);
+  border: 2px solid var(--info-border);
   margin: 1rem 0;
   padding: 0;
 
   .inner {
     padding: 0.875rem 1rem;
   }
-
   h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 1.4;
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+    color: var(--info-text);
   }
-
   p {
-    font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 0.5rem;
   }
-
   footer {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgb(35 52 104 / 0.08);
     padding: 0.5rem 1rem;
   }
-
   .small {
     font-size: 0.875rem;
-    line-height: 1.4;
     margin-bottom: 0.5rem;
   }
-
   code {
-    background: rgba(0, 0, 0, 0.06);
-    border-radius: 0.25rem;
+    background: rgb(35 52 104 / 0.12);
+    color: var(--info-text);
     padding: 0.1em 0.3em;
   }
-
   a {
+    color: var(--info-text);
     text-decoration: underline;
-    text-underline-offset: 6px;
+    text-underline-offset: 4px;
   }
 }
 
 /*
 * --------------------------------------------------
-* components/Aside
+* components/Aside (kosár / kereső / mobil menü fiók)
 * --------------------------------------------------
 */
 @media (max-width: 45em) {
@@ -85,60 +360,85 @@ img {
 }
 
 aside {
-  background: var(--color-light);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  background: var(--chalk);
+  background-image: radial-gradient(
+    560px 420px at 112% -6%,
+    var(--glow-amber),
+    transparent 60%
+  );
+  box-shadow: -26px 0 64px -22px var(--shadow-strong);
+  border-left: 1px solid var(--frame);
   height: 100vh;
   width: min(var(--aside-width), 100vw);
   position: fixed;
   right: calc(-1 * var(--aside-width));
   top: 0;
-  transition: transform 200ms ease-in-out;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 aside header {
-  align-items: center;
-  border-bottom: 1px solid var(--color-dark);
+  align-items: baseline;
+  background: var(--board);
+  color: var(--chalk);
   display: flex;
-  height: var(--header-height);
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 1.3rem 1.4rem 1.1rem;
 }
 
 aside header h3 {
   margin: 0;
+  color: var(--chalk);
+  font-size: 1.5rem;
 }
 
 aside header .close {
-  font-weight: bold;
-  opacity: 0.8;
+  color: var(--chalk);
+  font-size: 1.7rem;
+  line-height: 1;
+  opacity: 0.75;
   text-decoration: none;
-  transition: all 200ms;
-  width: 20px;
+  transition: opacity 160ms ease;
 }
-
 aside header .close:hover {
   opacity: 1;
-}
-
-aside header h2 {
-  margin-bottom: 0.6rem;
-  margin-top: 0;
+  color: var(--accent);
 }
 
 aside main {
-  margin: 1rem;
+  margin: 1.25rem 1.4rem;
 }
 
 aside p {
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.35rem;
 }
-
 aside p:last-child {
   margin: 0;
 }
-
 aside li {
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.2rem;
+}
+
+aside input[type='search'] {
+  width: 100%;
+  border: 1px solid var(--frame);
+  background: var(--paper);
+  padding: 0.65rem 0.75rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+/* mobil menü a fiókban */
+aside .header-menu-mobile {
+  gap: 0.25rem;
+}
+aside .header-menu-mobile .header-menu-item {
+  font-size: 1.4rem;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  border-bottom: 0;
+  padding: 0.35rem 0;
 }
 
 .sr-only {
@@ -154,7 +454,7 @@ aside li {
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--overlay);
   bottom: 0;
   left: 0;
   opacity: 0;
@@ -162,12 +462,10 @@ aside li {
   position: fixed;
   right: 0;
   top: 0;
-  transition: opacity 400ms ease-in-out;
-  transition: opacity 400ms;
+  transition: opacity 320ms ease-in-out;
   visibility: hidden;
-  z-index: 10;
+  z-index: 50;
 }
-
 .overlay .close-outside {
   background: transparent;
   border: none;
@@ -178,24 +476,20 @@ aside li {
   top: 0;
   width: calc(100% - var(--aside-width));
 }
-
 .overlay .light {
   background: rgba(255, 255, 255, 0.5);
 }
-
 .overlay .cancel {
   cursor: default;
   height: 100%;
   position: absolute;
   width: 100%;
 }
-
 .overlay.expanded {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
 }
-/* reveal aside */
 .overlay.expanded aside {
   transform: translateX(calc(var(--aside-width) * -1));
 }
@@ -205,95 +499,260 @@ button.reset {
   background: inherit;
   font-size: inherit;
 }
-
 button.reset > * {
   margin: 0;
 }
-
 button.reset:not(:has(> *)) {
   height: 1.5rem;
   line-height: 1.5rem;
 }
-
 button.reset:hover:not(:has(> *)) {
-  text-decoration: underline;
   cursor: pointer;
 }
 
 /*
 * --------------------------------------------------
-* components/Header
+* components/Header (piac-stand fejléc)
 * --------------------------------------------------
 */
 .header {
   align-items: center;
-  background: #fff;
+  background: var(--board);
+  color: var(--chalk);
   display: flex;
   height: var(--header-height);
-  padding: 0 1rem;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 20;
+  border-bottom: 2px solid var(--primary);
 }
 
-.header-menu-mobile-toggle {
-  @media (min-width: 48em) {
+.header a {
+  color: var(--chalk);
+}
+.header a:hover {
+  color: var(--accent);
+}
+
+/* Márkajel */
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  line-height: 1;
+}
+.logo-mark {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  color: var(--chalk);
+}
+.logo-mark em {
+  font-style: normal;
+  color: var(--accent);
+  padding: 0 0.04em;
+}
+.logo-sub {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.54rem;
+  font-weight: 700;
+  color: var(--amber);
+  align-self: center;
+}
+@media (max-width: 34em) {
+  .logo-sub {
     display: none;
   }
 }
 
+.header-menu-mobile-toggle {
+  color: var(--chalk);
+}
+@media (min-width: 48em) {
+  .header-menu-mobile-toggle {
+    display: none;
+  }
+}
 .header-menu-mobile {
   display: flex;
   flex-direction: column;
   grid-gap: 1rem;
 }
-
 .header-menu-desktop {
   display: none;
-  grid-gap: 1rem;
-  @media (min-width: 45em) {
+  grid-gap: 1.6rem;
+}
+@media (min-width: 45em) {
+  .header-menu-desktop {
     display: flex;
-    grid-gap: 1rem;
-    margin-left: 3rem;
+    margin-left: clamp(1.5rem, 5vw, 3.2rem);
   }
 }
-
 .header-menu-item {
   cursor: pointer;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
+}
+.header-menu-item:hover {
+  border-bottom-color: var(--accent);
+}
+.header-menu-item[aria-current='page'] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .header-ctas {
   align-items: center;
   display: flex;
-  grid-gap: 1rem;
+  grid-gap: 1.1rem;
   margin-left: auto;
 }
-
 .header-ctas > * {
   min-width: fit-content;
 }
 
+.header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--chalk);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0.3rem 0.1rem;
+  transition: color 150ms ease;
+}
+.header-cta:hover {
+  color: var(--accent);
+}
+.header-cta svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+@media (max-width: 48em) {
+  .header-cta-label {
+    display: none;
+  }
+}
+.cart-toggle {
+  position: relative;
+}
+.cart-count {
+  position: absolute;
+  top: -7px;
+  left: 11px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.64rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
 /*
 * --------------------------------------------------
-* components/Footer
+* components/Footer (piac-lábléc)
 * --------------------------------------------------
 */
 .footer {
-  background: var(--color-dark);
+  background: var(--board-deep);
+  color: var(--chalk);
   margin-top: auto;
+  border-top: 2px solid var(--primary);
 }
-
-.footer-menu {
-  justify-content: center;
+.footer-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 3.25rem 1.5rem 2.5rem;
+  display: grid;
+  gap: 2.25rem;
+}
+@media (min-width: 40em) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 60em) {
+  .footer-inner {
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+}
+.footer-wordmark {
+  color: var(--chalk);
+  font-size: 1.6rem;
+}
+.footer-tagline {
+  margin-top: 0.9rem;
+  max-width: 22rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 1.02rem;
+  color: var(--text-inverse);
+}
+.footer-authors {
+  margin-top: 0.4rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-inverse-muted);
+}
+.footer-col {
   display: flex;
-  flex-wrap: wrap;
-  grid-gap: 1rem;
-  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
 }
-
-.footer-menu a {
-  color: var(--color-light);
-  min-width: fit-content;
+.footer-col-title {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--amber);
+  margin: 0 0 0.2rem;
+}
+.footer-col a {
+  color: var(--text-inverse-muted);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 0.95rem;
+  transition: color 150ms ease;
+}
+.footer-col a:hover,
+.footer-col a[aria-current='page'] {
+  color: var(--chalk);
+}
+.footer-base {
+  border-top: 1px solid var(--divider-inverse);
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--text-inverse-muted);
 }
 
 /*
@@ -307,57 +766,127 @@ button.reset:hover:not(:has(> *)) {
   overflow-y: auto;
   width: auto;
 }
-
 .cart-main.with-discount {
   max-height: calc(100vh - var(--cart-aside-summary-height-with-discount));
 }
-
 .cart-line {
   padding: 0.75rem 0;
+  border-bottom: 1px solid var(--divider);
 }
-
 .cart-line-inner {
   display: flex;
 }
-
 .cart-line img {
   height: 100%;
   display: block;
   margin-right: 0.75rem;
+  border: 1px solid var(--ink);
 }
-
 .cart-summary-page {
   position: relative;
 }
-
 .cart-summary-aside {
-  background: white;
-  border-top: 1px solid var(--color-dark);
+  background: var(--board);
+  color: var(--chalk);
   bottom: 0;
-  padding-top: 0.75rem;
+  padding: 1.1rem 1.4rem 1.3rem;
   position: absolute;
-  width: calc(var(--aside-width) - 40px);
+  width: calc(var(--aside-width) - 2px);
+  left: 0;
+}
+.cart-summary-aside a,
+.cart-summary-aside dt,
+.cart-summary-aside dd,
+.cart-summary-aside h4 {
+  color: var(--chalk);
+}
+.cart-summary-aside h4 {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-size: 1.25rem;
+  margin: 0 0 0.6rem;
+}
+.cart-subtotal {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+}
+.cart-subtotal dt {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+.cart-subtotal dd {
+  margin: 0;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+.cart-checkout {
+  display: block;
+  margin-top: 0.9rem;
+}
+.cart-checkout:hover {
+  color: var(--ink);
+}
+.cart-checkout .btn-market {
+  width: 100%;
+  justify-content: center;
 }
 
 .cart-line-quantity {
   display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.4rem;
 }
-
-/* Child line components (warranties, gift wrapping, etc.) */
+.cart-line-quantity small {
+  margin-right: 0.4rem;
+}
+.cart-line-quantity button:not(.cart-remove) {
+  width: 1.9rem;
+  height: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+.cart-line-quantity button:not(.cart-remove):hover:not([disabled]) {
+  background: var(--ink);
+  color: var(--chalk);
+}
+.cart-line-quantity button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.cart-remove {
+  background: none;
+  border: 0;
+  margin-left: 0.35rem;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: var(--danger);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cart-remove:hover {
+  color: var(--danger-text);
+}
 .cart-line-children {
   padding-left: 2rem;
 }
 
-.cart-discount {
-  align-items: center;
-  display: flex;
-  margin-top: 0.25rem;
-}
-
-.cart-subtotal {
-  align-items: center;
-  display: flex;
-}
 /*
 * --------------------------------------------------
 * components/Search
@@ -367,126 +896,67 @@ button.reset:hover:not(:has(> *)) {
   height: calc(100vh - var(--header-height) - 40px);
   overflow-y: auto;
 }
-
 .predictive-search-form {
-  background: var(--color-light);
+  background: var(--chalk);
   position: sticky;
   top: 0;
 }
-
 .predictive-search-result {
   margin-bottom: 2rem;
 }
-
 .predictive-search-result h5 {
   text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
-
 .predictive-search-result-item {
   margin-bottom: 0.5rem;
 }
-
 .predictive-search-result-item a {
   align-items: center;
   display: flex;
 }
-
 .predictive-search-result-item a img {
   margin-right: 0.75rem;
   height: 100%;
 }
-
 .search-result {
   margin-bottom: 1.5rem;
 }
-
 .search-results-item {
   margin-bottom: 0.5rem;
 }
-
 .search-results-item a {
   display: flex;
-  flex: row;
   align-items: center;
   gap: 1rem;
 }
 
 /*
 * --------------------------------------------------
-* routes/__index
+* routes/collections._index.tsx + collections.$handle.tsx
 * --------------------------------------------------
 */
-.featured-collection {
-  display: block;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.featured-collection-image {
-  aspect-ratio: 1 / 1;
-  @media (min-width: 45em) {
-    aspect-ratio: 16 / 9;
-  }
-}
-
-.featured-collection img {
-  height: auto;
-  max-height: 100%;
-  object-fit: cover;
-}
-
-.recommended-products-grid {
-  display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(2, 1fr);
-  @media (min-width: 45em) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.recommended-product img {
-  height: auto;
-}
-
-/*
-* --------------------------------------------------
-* routes/collections._index.tsx
-* --------------------------------------------------
-*/
-.collections-grid {
-  display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
-  margin-bottom: 2rem;
-}
-
-.collection-item img {
-  height: auto;
-}
-
-/*
-* --------------------------------------------------
-* routes/collections.$handle.tsx
-* --------------------------------------------------
-*/
-.collection-description {
-  margin-bottom: 1rem;
-  max-width: 95%;
-  @media (min-width: 45em) {
-    max-width: 600px;
-  }
-}
-
+.collections-grid,
 .products-grid {
   display: grid;
   grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
-  margin-bottom: 2rem;
+  margin: 1.5rem 0 2rem;
 }
-
+.collection-item img,
 .product-item img {
   height: auto;
   width: 100%;
+  border: 1px solid var(--frame);
+}
+.collection-description {
+  margin-bottom: 1rem;
+  max-width: 95%;
+}
+@media (min-width: 45em) {
+  .collection-description {
+    max-width: 600px;
+  }
 }
 
 /*
@@ -496,63 +966,130 @@ button.reset:hover:not(:has(> *)) {
 */
 .product {
   display: grid;
-  @media (min-width: 45em) {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+  gap: 2rem;
+}
+@media (min-width: 45em) {
+  .product {
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
   }
 }
-
 .product h1 {
-  margin-top: 0;
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
 }
-
 .product-image img {
   height: auto;
   width: 100%;
+  border: 1px solid var(--frame);
+  box-shadow: var(--shadow-soft);
 }
-
 .product-main {
   align-self: start;
   position: sticky;
-  top: 6rem;
+  top: calc(var(--header-height) + 1.5rem);
 }
-
 .product-price-on-sale {
   display: flex;
   grid-gap: 0.5rem;
+  align-items: baseline;
 }
-
 .product-price-on-sale s {
   opacity: 0.5;
 }
-
 .product-options-grid {
   display: flex;
   flex-wrap: wrap;
   grid-gap: 0.75rem;
 }
-
 .product-options-item,
 .product-options-item:disabled {
-  padding: 0.25rem 0.5rem;
-  background-color: transparent;
+  padding: 0.35rem 0.7rem;
+  background-color: var(--surface);
   font-size: 1rem;
   font-family: inherit;
+  cursor: pointer;
 }
-
+.product-options-item:hover {
+  background-color: var(--surface-2);
+}
 .product-option-label-swatch {
   width: 1.25rem;
   height: 1.25rem;
   margin: 0.25rem 0;
 }
-
 .product-option-label-swatch img {
   width: 100%;
 }
 
+/* Előrendelés gomb (a submit a CartForm <form>-ján belül) */
+.product-form form button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 0;
+  padding: 0.9rem 2rem;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-crate);
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+}
+.product-form form button:hover:not([disabled]) {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-hover);
+}
+.product-form form button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /*
 * --------------------------------------------------
-* routes/blog._index.tsx
+* routes/pages.$handle.tsx
+* --------------------------------------------------
+*/
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+}
+.page header h1 {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  margin-bottom: 1.75rem;
+  line-height: 0.95;
+}
+.page main {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 1.14rem;
+  line-height: 1.75;
+}
+.page main h2,
+.page main h3 {
+  margin: 2.2rem 0 0.75rem;
+}
+.page main p {
+  margin-bottom: 1rem;
+}
+.page main a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/*
+* --------------------------------------------------
+* routes/blog*
 * --------------------------------------------------
 */
 .blog-grid {
@@ -561,21 +1098,14 @@ button.reset:hover:not(:has(> *)) {
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
   margin-bottom: 2rem;
 }
-
 .blog-article-image {
   aspect-ratio: 3/2;
   display: block;
 }
-
 .blog-article-image img {
   height: 100%;
+  border: 1px solid var(--frame);
 }
-
-/*
-* --------------------------------------------------
-* routes/blog.$articlehandle.tsx
-* --------------------------------------------------
-*/
 .article img {
   height: auto;
   width: 100%;
@@ -583,63 +1113,220 @@ button.reset:hover:not(:has(> *)) {
 
 /*
 * --------------------------------------------------
-* routes/account
+* routes/account + order search
 * --------------------------------------------------
 */
-
 .account-logout {
   display: inline-block;
 }
-
-/*
-* --------------------------------------------------
-* Order Search Form - Minimal & Responsive
-* --------------------------------------------------
-*/
 .order-search-form {
   margin-bottom: 1.5rem;
 }
-
 .order-search-fieldset {
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
+  border: 1px solid var(--frame);
   padding: 1rem;
 }
-
 .order-search-legend {
-  font-weight: 600;
+  font-weight: 700;
   padding: 0 0.5rem;
 }
-
 .order-search-active {
   font-weight: normal;
   opacity: 0.7;
   margin-left: 0.5rem;
 }
-
 .order-search-inputs {
   display: grid;
   gap: 1rem;
   margin: 0.25rem 0 1rem;
   grid-template-columns: 1fr;
 }
-
 @media (min-width: 640px) {
   .order-search-inputs {
     grid-template-columns: 1fr 1fr;
   }
 }
-
 .order-search-input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
+  border: 1px solid var(--frame);
   font-size: 1rem;
 }
-
 .order-search-buttons {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
+/*
+* --------------------------------------------------
+* routes/_index.tsx (piac-tábla főoldal)
+* --------------------------------------------------
+*/
+.home {
+  overflow: clip;
+  /* A tartalom töltse ki legalább a fejléc alatti területet, hogy rövid
+     tartalomnál se maradjon üres krém-sáv a záró sáv és a lábléc között. */
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--header-height));
+}
+/* A záró (terrakotta) sáv nyeli el a maradék helyet → a lábléchez ér. */
+.home > section:last-child {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Két sáv (ROST | UMAMI) */
+.stream {
+  min-height: clamp(280px, 42vh, 460px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+.stream-word {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+}
+
+/* Összeolvadás jelzése */
+.merge-chevron {
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 44px;
+  height: 44px;
+  background: var(--amber);
+  box-shadow: 0 8px 18px -6px var(--shadow-strong);
+  z-index: 3;
+}
+
+/* Kiemelt tétel – a könyv ládában */
+.crate {
+  position: relative;
+  isolation: isolate;
+  background: var(--chalk);
+  border: 1px solid var(--frame);
+  padding: 0.75rem;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms ease;
+}
+.crate img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  border: 1px solid var(--hairline);
+}
+.crate:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Pipa-lista (rost / umami előnyök) */
+.tick-list {
+  display: grid;
+  gap: 0.7rem;
+}
+.tick-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin: 0;
+  line-height: 1.4;
+}
+.tick-leaf li::before {
+  background: var(--olive) !important;
+}
+.tick-cocoa li::before {
+  background: var(--terracotta) !important;
+}
+.tick-list li::before {
+  content: '';
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  background: var(--ink);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20 6.5 9.4 17.1 4 11.7l1.6-1.6 3.8 3.8L18.4 4.9z'/%3E%3C/svg%3E")
+    center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20 6.5 9.4 17.1 4 11.7l1.6-1.6 3.8 3.8L18.4 4.9z'/%3E%3C/svg%3E")
+    center/contain no-repeat;
+}
+
+/* A könyvből – galéria kártyák */
+.gallery-card {
+  background: var(--chalk);
+  border: 1px solid var(--frame);
+  padding: 0.6rem;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms ease;
+}
+.gallery-card figure {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+}
+.gallery-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gallery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.gallery-card:hover img {
+  transform: scale(1.05);
+}
+.gallery-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.7rem 0.2rem 0.2rem;
+}
+.gallery-plate {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+/*
+* --------------------------------------------------
+* Hero: várható megjelenés sor + „Miért rost és umami" kártyák
+* --------------------------------------------------
+*/
+.reassure-line {
+  margin-top: 1.4rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border);
+  max-width: 30rem;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.reassure-line strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.why-card {
+  padding: 1.9rem;
+}
+.why-card-title {
+  margin: 0 0 1.3rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+

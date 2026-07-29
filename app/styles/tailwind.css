@@ -1,6 +1,44 @@
 /**
- * Configure Tailwind v4 in this file using CSS variables and directives:
- * https://tailwindcss.com/docs/v4-beta#css-first-configuration
+ * Tailwind v4 – CSS-first konfiguráció.
+ * Világ: meleg, szerkesztői (editorial) prémium szakácskönyv, a
+ * "Rost és Umami" borító palettájára hangolva (lásd DESIGN.md).
+ *
+ * Kétrétegű színrendszer:
+ *   1) PRIMITÍVEK – a borító-illesztett paletta (a "festék").
+ *   2) SZEMANTIKUS tokenek – szerepek (felület, szöveg, akció, állapot…).
  */
 
 @import 'tailwindcss';
+
+@theme {
+  /* ---------- Primitívek (borító-paletta) ---------- */
+  --color-paper: #f5e3b5; /* domináns búza-krém háttér */
+  --color-chalk: #fbf1d4; /* emelt felület / világos szöveg sötéten */
+  --color-cream-deep: #ecdcae;
+  --color-ink: #3a1218; /* mély szilva – tipográfia / sötét kontraszt */
+  --color-ink-soft: #6b4a44; /* tompított szöveg világos alapon */
+  --color-board: #3a1218; /* sötét mezők (fejléc, galéria, lábléc) */
+  --color-board-deep: #2b0e12;
+  --color-terracotta: #d84a13; /* elsődleges márkaszín */
+  --color-terracotta-deep: #a5350d; /* hover / akcent-szöveg világoson */
+  --color-amber: #eda62b; /* visszafogott akcent */
+  --color-olive: #5d8a32; /* zöld – csak takarékosan */
+
+  /* ---------- Szemantikus szín-utility-k ---------- */
+  --color-bg: var(--color-paper);
+  --color-surface: var(--color-chalk);
+  --color-surface-2: var(--color-cream-deep);
+  --color-inverse: var(--color-board);
+  --color-content: var(--color-ink);
+  --color-muted: var(--color-ink-soft);
+  --color-primary: var(--color-terracotta);
+  --color-secondary: var(--color-board);
+  --color-success: var(--color-olive);
+  --color-warning: var(--color-amber);
+  --color-danger: #b3261e;
+  --color-info: var(--color-terracotta-deep);
+
+  /* Betűk */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+}

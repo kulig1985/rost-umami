@@ -54,8 +54,8 @@ export function ProductForm({
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? '2px solid var(--frame)'
+                          : '2px solid var(--border)',
                         opacity: available ? 1 : 0.3,
                       }}
                     >
@@ -77,8 +77,8 @@ export function ProductForm({
                       key={option.name + name}
                       style={{
                         border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                          ? '2px solid var(--frame)'
+                          : '2px solid var(--border)',
                         opacity: available ? 1 : 0.3,
                       }}
                       disabled={!exists}
@@ -118,7 +118,7 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? 'Előrendelés' : 'Elfogyott'}
       </AddToCartButton>
     </div>
   );
