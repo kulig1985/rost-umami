@@ -29,18 +29,20 @@ A `socat` azért kell, mert a mini‑oxygen alapból localhostra köt. Ha a `pre
 ---
 
 ## FÁZIS B — 👤 Shopify admin
-A tokenek/ID‑k a **Headless** sales channel storefrontjának API‑oldalán vannak.
+A tokenek/ID‑k a **Headless** sales channel storefrontjában vannak
+(Admin → Sales channels → Headless → a storefrontod).
 
-- [ ] **Headless channel** → storefront → *API credentials*:
+- [ ] **Storefront API** szekció:
   - [ ] `PUBLIC_STOREFRONT_API_TOKEN` (Public token)
   - [ ] `PRIVATE_STOREFRONT_API_TOKEN` (Private token) — **ellenőrizd**, hogy privát Storefront token
         (ne Admin `shpat_`); ha kell, generálj újat
-  - [ ] `PUBLIC_STOREFRONT_ID` (Storefront ID)
-  - [ ] `SHOP_ID` (numerikus Shop ID)
-- [ ] **Customer Account API** (Headless → Customer Account API; + Settings → Customer accounts:
-      „new customer accounts" bekapcsolva):
+- [ ] **Customer Account API** szekció (+ Settings → Customer accounts: „new customer accounts" be):
   - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` (Client ID)
-  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_URL` (az ott megjelenő API URL — pontosan másold)
+  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_URL` (az ott megjelenő Customer Account API endpoint/URL)
+  - [ ] `SHOP_ID` = a numerikus shop id — a fenti URL‑ben benne van, vagy `{ shop { id } }`
+        (`gid://shopify/Shop/<SHOP_ID>`)
+- [ ] `PUBLIC_STOREFRONT_ID` — **Headless‑nél nincs** (Hydrogen‑channel érték); csak analytics
+      használja → **hagyd üresen**, minden más működik nélküle
   - [ ] **Callback URI:** `https://rost-umami.kebodev.hu/account/authorize`
   - [ ] **JavaScript origin:** `https://rost-umami.kebodev.hu`
   - [ ] **Logout URI:** `https://rost-umami.kebodev.hu`
@@ -88,8 +90,8 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjának API‑oldalán va
 | `PUBLIC_STOREFRONT_API_TOKEN` | public | Headless → Public token |
 | `PRIVATE_STOREFRONT_API_TOKEN` | secret | Headless → Private token (ellenőrizni) |
 | `PUBLIC_CHECKOUT_DOMAIN` | public | `rost-es-umami.myshopify.com` |
-| `PUBLIC_STOREFRONT_ID` | public | Headless → Storefront ID |
-| `SHOP_ID` | public | Headless / Customer Account → Shop ID |
+| `PUBLIC_STOREFRONT_ID` | public (opcionális) | Headless‑nél nincs → üresen; csak analytics |
+| `SHOP_ID` | public | Customer Account API URL‑ből, vagy `{ shop { id } }` |
 | `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` | public | Customer Account API → Client ID |
 | `PUBLIC_CUSTOMER_ACCOUNT_API_URL` | public | Customer Account API → API URL |
 | `SITE_DOMAIN` | deploy | `rost-umami.kebodev.hu` |
