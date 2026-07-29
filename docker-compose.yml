@@ -7,20 +7,24 @@ services:
     # A Shopify CLI a .env fájlt is olvassa a cwd-ből → biztonsági öv a process env mellé.
     volumes:
       - ./.env:/app/.env:ro
-    expose:
-      - "3000"
+    # Csak localhostra publikálunk — a HOST reverse proxy (Caddy) ide proxyzzon.
+    ports:
+      - "127.0.0.1:8787:3000"
     networks: [web]
 
+  # Bundolt Caddy CSAK akkor kell, ha a hoston NINCS reverse proxy.
+  # Ilyenkor: `docker compose --profile bundled-proxy up -d`.
+  # Ha a hoston már fut Caddy/nginx (mint itt), ezt NE indítsd — használd a host proxyt.
   caddy:
     image: caddy:2
+    profiles: ["bundled-proxy"]
     restart: unless-stopped
     depends_on: [app]
     ports:
       - "80:80"
       - "443:443"
     environment:
-      # A .env-ből interpolálva (docker compose a projekt .env-jét olvassa a ${...}-hez).
-      SITE_DOMAIN: ${SITE_DOMAIN}
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

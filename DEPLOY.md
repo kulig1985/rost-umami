@@ -70,9 +70,27 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjában vannak
       openssl rand -hex 32   # → ez legyen a SESSION_SECRET
       chmod 600 .env
       ```
-- [ ] Indítás: `docker compose up -d --build`
-- [ ] A Caddy automatikusan lekéri a Let's Encrypt certet (80/443 + DNS kell hozzá)
-- [ ] Logok: `docker compose logs -f app` · `docker compose logs -f caddy`
+- [ ] Indítás (csak az app, `127.0.0.1:8787`-re): `docker compose up -d --build`
+- [ ] Logok: `docker compose logs -f app` → várd a `MiniOxygen … preview server running` sort
+
+### Reverse proxy — két eset
+**A) Már fut Caddy a hoston (ez a te helyzeted):** ne indítsd a bundolt Caddyt. Vedd fel ezt a
+blokkot a host Caddyfile-ba (jellemzően `/etc/caddy/Caddyfile`), majd töltsd újra:
+```
+rost-umami.kebodev.hu {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8787
+}
+```
+```bash
+sudo nano /etc/caddy/Caddyfile      # add hozzá a fenti blokkot
+sudo systemctl reload caddy         # (vagy: caddy reload --config /etc/caddy/Caddyfile)
+```
+A host Caddy automatikusan lekéri a TLS certet (80/443 + DNS kell). Több site esetén az egyes
+`site { }` blokkok békésen megférnek egymás mellett.
+
+**B) Nincs host proxy:** indítsd a bundolt Caddyt: `docker compose --profile bundled-proxy up -d`
+(ez foglalja a 80/443-at és a `Caddyfile` + `SITE_DOMAIN` alapján ad TLS-t).
 
 ## FÁZIS D — Verifikáció
 - [ ] `curl -I https://rost-umami.kebodev.hu` → `200` + érvényes TLS cert
