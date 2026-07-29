@@ -1,7 +1,8 @@
 FROM node:22-bookworm-slim
 
 # socat: a mini-oxygen (workerd) localhost-ra köt; a socat teszi ki 0.0.0.0-ra a Caddynek
-RUN apt-get update && apt-get install -y --no-install-recommends socat ca-certificates \
+# libatomic1: a workerd (mini-oxygen futtatómotor) igényli, a slim image-ből hiányzik.
+RUN apt-get update && apt-get install -y --no-install-recommends socat ca-certificates libatomic1 \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
