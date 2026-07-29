@@ -8,8 +8,12 @@ WORKDIR /app
 
 # A @shopify/cli + @shopify/mini-oxygen devDeps, DE a `preview` futtatáshoz kellenek,
 # ezért a teljes függőségi fát telepítjük (nincs --omit=dev).
+# Hálózati megerősítés (registry hibák ellen), audit/fund kikapcsolva a gyorsabb, stabilabb telepítésért.
+ENV npm_config_fetch_retries=5 \
+    npm_config_fetch_retry_maxtimeout=120000 \
+    npm_config_fetch_timeout=600000
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 RUN npm run build
