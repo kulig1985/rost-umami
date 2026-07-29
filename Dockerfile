@@ -6,14 +6,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends socat ca-certif
 
 WORKDIR /app
 
+# Az npm 10.9.x-nek ismert "Exit handler never called!" hibája van nagy telepítésnél
+# és kevés RAM-nál → frissítjük egy stabil újabb verzióra.
+RUN npm install -g npm@11
+
 # A @shopify/cli + @shopify/mini-oxygen devDeps, DE a `preview` futtatáshoz kellenek,
 # ezért a teljes függőségi fát telepítjük (nincs --omit=dev).
-# Hálózati megerősítés (registry hibák ellen), audit/fund kikapcsolva a gyorsabb, stabilabb telepítésért.
+# Hálózati megerősítés + kisebb párhuzamosság (alacsonyabb memória-csúcs kis VPS-en).
 ENV npm_config_fetch_retries=5 \
     npm_config_fetch_retry_maxtimeout=120000 \
     npm_config_fetch_timeout=600000
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --maxsockets 3
 
 COPY . .
 RUN npm run build
