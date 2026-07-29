@@ -53,7 +53,12 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjának API‑oldalán va
 - [ ] VPS (Ubuntu 22.04/24.04); a **80** és **443** portok nyitva
 - [ ] **DNS:** `rost-umami.kebodev.hu` **A rekord → VPS publikus IP**
 - [ ] Docker: `curl -fsSL https://get.docker.com | sh`
-- [ ] Kód: `git clone https://github.com/kulig1985/rost-umami.git /opt/rost-umami && cd /opt/rost-umami`
+- [ ] Kód (a saját mappádba, pl. `~/shopify`):
+      ```bash
+      cd ~/shopify
+      git clone https://github.com/kulig1985/rost-umami.git
+      cd rost-umami
+      ```
 - [ ] `.env` a VPS‑en (NEM gitből):
       ```bash
       cp .env.example .env
@@ -99,7 +104,7 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjának API‑oldalán va
 
 ## Frissítés / újradeploy
 ```bash
-cd /opt/rost-umami
+cd ~/shopify/rost-umami
 git pull
 docker compose up -d --build
 ```
