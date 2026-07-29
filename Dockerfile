@@ -16,7 +16,8 @@ RUN npm install -g npm@11
 ENV npm_config_fetch_retries=5 \
     npm_config_fetch_retry_maxtimeout=120000 \
     npm_config_fetch_timeout=600000
-COPY package.json package-lock.json ./
+# A .npmrc a PUBLIKUS registryt írja elő (a fejlesztői gép belső Nexusa helyett).
+COPY package.json package-lock.json .npmrc ./
 RUN npm ci --no-audit --no-fund --maxsockets 3
 
 COPY . .
