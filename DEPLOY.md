@@ -37,10 +37,12 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjában vannak
   - [ ] `PRIVATE_STOREFRONT_API_TOKEN` (Private token) — **ellenőrizd**, hogy privát Storefront token
         (ne Admin `shpat_`); ha kell, generálj újat
 - [ ] **Customer Account API** szekció (+ Settings → Customer accounts: „new customer accounts" be):
-  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` (Client ID)
-  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_URL` (az ott megjelenő Customer Account API endpoint/URL)
-  - [ ] `SHOP_ID` = a numerikus shop id — a fenti URL‑ben benne van, vagy `{ shop { id } }`
-        (`gid://shopify/Shop/<SHOP_ID>`)
+  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` (Client ID; ha `shp_`‑vel kezdődik, azzal együtt)
+  - [ ] `SHOP_ID` = az **Application endpoints** (Authorization/Token/Logout) URL‑ekben a
+        `/authentication/<SHOP_ID>/...` rész száma
+  - [ ] `PUBLIC_CUSTOMER_ACCOUNT_API_URL` — ez a Hydrogen verzió (2026.4) **NEM használja**
+        (a klienst `CLIENT_ID` + `SHOP_ID` építi) → **hagyd üresen**
+  - [ ] Redirect URI‑k beállítása (lásd lentebb): callback `/account/authorize`, origin, logout
 - [ ] `PUBLIC_STOREFRONT_ID` — **Headless‑nél nincs** (Hydrogen‑channel érték); csak analytics
       használja → **hagyd üresen**, minden más működik nélküle
   - [ ] **Callback URI:** `https://rost-umami.kebodev.hu/account/authorize`
@@ -93,7 +95,7 @@ A tokenek/ID‑k a **Headless** sales channel storefrontjában vannak
 | `PUBLIC_STOREFRONT_ID` | public (opcionális) | Headless‑nél nincs → üresen; csak analytics |
 | `SHOP_ID` | public | Customer Account API URL‑ből, vagy `{ shop { id } }` |
 | `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` | public | Customer Account API → Client ID |
-| `PUBLIC_CUSTOMER_ACCOUNT_API_URL` | public | Customer Account API → API URL |
+| `PUBLIC_CUSTOMER_ACCOUNT_API_URL` | — | ez a verzió nem használja → üresen |
 | `SITE_DOMAIN` | deploy | `rost-umami.kebodev.hu` |
 | `NODE_ENV` | runtime | `production` |
 
